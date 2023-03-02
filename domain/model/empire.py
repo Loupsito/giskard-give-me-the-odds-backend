@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from domain.models.scheduled_day import ScheduledDay
+from domain.model.scheduled_day import ScheduledDay
 
 
 class Empire(BaseModel):
