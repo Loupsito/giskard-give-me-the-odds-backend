@@ -1,23 +1,23 @@
-import networkx as nx
-
 from domain.dto.give_me_the_odds_request import GiveMeTheOddsRequest
+from domain.helper.odds_helper import calculate_probability_of_being_captured
+from domain.helper.route_helper import calculate_total_time_travel, count_number_of_planet_stop, determine_path
+from infrastructure.database.repository.entity.route_entity import RouteEntity
 from infrastructure.database.repository.implementation import route_repository
 
 
-async def calculate_odds(request: GiveMeTheOddsRequest):
-    routes = await route_repository.get_all_routes()
+async def determine_odds(request: GiveMeTheOddsRequest):
+    routes: [RouteEntity] = await route_repository.get_all_routes()
     print("routes from calculate_odds =", routes)
 
-    number_of_planets = count_planets(routes, request.millennium_falcon.departure, request.millennium_falcon.arrival)
-    print("number_of_planets of calculate_odds =", number_of_planets)
+    path: [str] = determine_path(routes, request.millennium_falcon.departure, request.millennium_falcon.arrival)
+    print("path ==> ", path)
+
+    number_of_planet_stop: int = count_number_of_planet_stop(path)
+    print("number_of_planets =", number_of_planet_stop)
+
+    total_time_travel: int = calculate_total_time_travel(path, routes)
+    print("total_time_travel ==> ", total_time_travel)
+
+    odds: float = calculate_probability_of_being_captured(number_of_planet_stop)
+    print("calculate_odds =", odds)
     return "Work in progress"
-
-
-def count_planets(routes, origin, destination):
-    graph = nx.DiGraph()
-    for route in routes:
-        graph.add_edge(route[0], route[1], weight=route[2])
-
-    path = nx.shortest_path(graph, source=origin, target=destination, weight='weight')
-
-    return len(path) - 2
