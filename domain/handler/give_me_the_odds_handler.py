@@ -1,6 +1,7 @@
 from domain.dto.give_me_the_odds_request import GiveMeTheOddsRequest
 from domain.helper.odds_helper import calculate_probability_of_being_captured
-from domain.helper.route_helper import calculate_total_time_travel, count_number_of_planet_stop, determine_path
+from domain.helper.route_helper import calculate_total_time_travel, count_number_of_planet_stop, determine_path, \
+    get_number_of_potential_capture
 from infrastructure.database.repository.entity.route_entity import RouteEntity
 from infrastructure.database.repository.implementation import route_repository
 
@@ -18,6 +19,10 @@ async def determine_odds(request: GiveMeTheOddsRequest):
     total_time_travel: int = calculate_total_time_travel(path, routes)
     print("total_time_travel ==> ", total_time_travel)
 
-    odds: float = calculate_probability_of_being_captured(number_of_planet_stop)
+    number_of_potential_capture: int = get_number_of_potential_capture(path, routes, request.millennium_falcon.autonomy,
+                                                                       request.empire)
+    print("number_of_potential_capture ==> ", number_of_potential_capture)
+
+    odds: float = calculate_probability_of_being_captured(number_of_potential_capture)
     print("calculate_odds =", odds)
     return "Work in progress"
