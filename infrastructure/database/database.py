@@ -1,20 +1,15 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, String, Integer
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from databases import Database
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./universe.db"
+from app_module import app
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+database_engine = Database("sqlite:///./universe.db")
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+@app.on_event("startup")
+async def database_connect():
+    await database_engine.connect()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+
+@app.on_event("shutdown")
+async def database_disconnect():
+    await database_engine.disconnect()

@@ -1,12 +1,6 @@
-from sqlalchemy.orm import Session
-
-from ... import models
+from infrastructure.database.database import database_engine
 
 
-def get_route(db: Session, origin: str, destination: str):
-    return db.query(models.Route).filter(
-        models.Route.origin == origin and models.Route.destination == destination).first()
-
-
-def get_all_routes(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Route).all()
+async def get_all_routes():
+    query = "SELECT * from routes"
+    return await database_engine.fetch_all(query=query)
