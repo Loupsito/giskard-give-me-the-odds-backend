@@ -6,7 +6,7 @@ from domain.model.odds import Odds
 from infrastructure.database.repository import route_repository
 
 
-async def determine_odds_of_success(request: GiveMeTheOddsRequest):
+async def determine_odds_of_success(request: GiveMeTheOddsRequest) -> Odds:
     routes = await route_repository.get_all_routes()
     ship_itinerary = get_ship_itinerary(routes, request.millennium_falcon.departure, request.millennium_falcon.arrival)
     ship_total_travel_time = get_ship_total_travel_time(ship_itinerary, routes)
