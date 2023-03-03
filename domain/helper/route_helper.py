@@ -43,12 +43,13 @@ def get_num_potential_captures(path: [str], routes: [RouteEntity], autonomy: int
         total_time_travel += route.travel_time
         autonomy -= route.travel_time
 
-        if autonomy <= 0:
+        hunters_in_the_way = sum(1 for h in empire.bounty_hunters if h.day == total_time_travel)
+
+        if autonomy <= 0 and hunters_in_the_way:
             num_potential_capture += 1
             autonomy = initial_autonomy
 
-        if i < len(path) - 2:
-            hunters_in_the_way = sum(1 for h in empire.bounty_hunters if h.day == total_time_travel)
+        elif hunters_in_the_way:
             num_potential_capture += hunters_in_the_way
 
     return num_potential_capture

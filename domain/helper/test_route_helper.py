@@ -1,7 +1,9 @@
-import pytest
 import networkx as nx
+import pytest
 
-from domain.helper.route_helper import get_ship_itinerary, get_ship_total_travel_time
+from domain.helper.route_helper import get_ship_itinerary, get_ship_total_travel_time, get_num_potential_captures
+from domain.model.bounty_hunter import BountyHunter
+from domain.model.empire import Empire
 from infrastructure.database.entity.route_entity import RouteEntity
 
 
@@ -95,3 +97,50 @@ def test_get_ship_total_travel_time_raises_exception_if_route_not_found():
         get_ship_total_travel_time(path, routes)
 
 
+def test_get_num_potential_captures_returns_correct_num():
+    routes = [
+        RouteEntity('A', 'B', 6),
+        RouteEntity('B', 'C', 1),
+        RouteEntity('C', 'D', 1)
+    ]
+    empire = Empire(
+        countdown=3,
+        bounty_hunters=[
+            BountyHunter(planet='B', day=6),
+            BountyHunter(planet='B', day=7),
+            BountyHunter(planet='D', day=8)
+        ]
+    )
+    path = ['A', 'B', 'C']
+    autonomy = 6
+    expected_num = 2
+
+    assert get_num_potential_captures(path, routes, autonomy, empire) == expected_num
+
+
+def test_get_num_potential_captures_handles_no_hunters():
+    routes = [
+        RouteEntity('A', 'B', 10),
+        RouteEntity('B', 'C', 15),
+        RouteEntity('C', 'D', 20)
+    ]
+    empire = Empire(countdown=3, bounty_hunters=[])
+    path = ['A', 'B', 'C', 'D']
+    autonomy = 50
+    expected_num = 0
+
+    assert get_num_potential_captures(path, routes, autonomy, empire) == expected_num
+
+
+def test_get_num_potential_captures_handles_zero_autonomy():
+    routes = [
+        RouteEntity('A', 'B', 10),
+        RouteEntity('B', 'C', 15),
+        RouteEntity('C', 'D', 20)
+    ]
+    empire = Empire(countdown=3, bounty_hunters=[])
+    path = ['A', 'B', 'C', 'D']
+    autonomy = 0
+    expected_num = 0
+
+    assert get_num_potential_captures(path, routes, autonomy, empire) == expected_num

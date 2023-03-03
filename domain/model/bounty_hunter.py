@@ -1,6 +1,8 @@
+from typing import Any
+
 from pydantic import BaseModel
 
 
-class ScheduledDay(BaseModel):
+class BountyHunter(BaseModel):
     planet: str
     day: int

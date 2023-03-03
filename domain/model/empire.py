@@ -2,9 +2,9 @@ from typing import List
 
 from pydantic import BaseModel
 
-from domain.model.scheduled_day import ScheduledDay
+from domain.model.bounty_hunter import BountyHunter
 
 
 class Empire(BaseModel):
     countdown: int
-    bounty_hunters: List[ScheduledDay]
+    bounty_hunters: List[BountyHunter]
