@@ -14,10 +14,18 @@ def get_ship_itinerary(routes: [RouteEntity], origin: str, destination: str):
 
 def get_ship_total_travel_time(path: [str], routes: [RouteEntity]):
     total_time_travel = 0
-    for i in range(0, len(path)):
-        route = filter(lambda r: r.origin == path[i] and r.destination == path[i + 1], routes)
-        for route_filtered in route:
-            total_time_travel = total_time_travel + route_filtered.travel_time
+
+    if len(path) <= 1:
+        raise ValueError("Path must have at least two nodes.")
+
+    for i in range(0, len(path) - 1):
+        origin = path[i]
+        destination = path[i + 1]
+        route_filter = filter(lambda r: r.origin == origin and r.destination == destination, routes)
+        route = next(route_filter, None)
+        if route is None:
+            raise ValueError(f"No route found between {origin} and {destination}")
+        total_time_travel += route.travel_time
 
     return total_time_travel
 
