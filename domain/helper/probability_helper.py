@@ -1,7 +1,4 @@
-from domain.dto.give_me_the_odds_request import GiveMeTheOddsRequest
-
-
-def get_probability_of_being_captured(number_of_planets: int):
+def get_prob_captured(number_of_planets: int):
     result = 0.0
     for i in range(number_of_planets):
         result += (9.0 ** i) / (10.0 ** (i + 1))

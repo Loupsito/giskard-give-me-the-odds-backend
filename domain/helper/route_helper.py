@@ -1,14 +1,10 @@
 import networkx as nx
 
 from domain.model.empire import Empire
-from infrastructure.database.repository.entity.route_entity import RouteEntity
+from infrastructure.database.entity.route_entity import RouteEntity
 
 
-def count_number_of_planet_stop(path: [str]):
-    return len(path) - 2
-
-
-def get_path(routes: [RouteEntity], origin: str, destination: str):
+def get_ship_itinerary(routes: [RouteEntity], origin: str, destination: str):
     graph = nx.DiGraph()
     for route in routes:
         graph.add_edge(route[0], route[1], weight=route[2])
@@ -16,7 +12,7 @@ def get_path(routes: [RouteEntity], origin: str, destination: str):
     return nx.shortest_path(graph, source=origin, target=destination, weight='weight')
 
 
-def get_total_time_travel(path: [str], routes: [RouteEntity]):
+def get_ship_total_travel_time(path: [str], routes: [RouteEntity]):
     total_time_travel = 0
     for i in range(0, len(path)):
         route = filter(lambda r: r.origin == path[i] and r.destination == path[i + 1], routes)
@@ -26,7 +22,7 @@ def get_total_time_travel(path: [str], routes: [RouteEntity]):
     return total_time_travel
 
 
-def get_number_of_potential_capture(path: [str], routes: [RouteEntity], autonomy: int, empire: Empire):
+def get_num_potential_captures(path: [str], routes: [RouteEntity], autonomy: int, empire: Empire):
     num_potential_capture = 0
     total_time_travel = 0
     initial_autonomy = autonomy

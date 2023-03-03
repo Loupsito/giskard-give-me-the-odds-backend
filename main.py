@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 
 from domain.dto.give_me_the_odds_request import GiveMeTheOddsRequest
-from domain.handler.give_me_the_odds_handler import determine_odds
-from domain.model.odds import Odds
+from domain.handler.give_me_the_odds_handler import determine_odds_of_success
 from infrastructure.database.database import database_engine
 
 app = FastAPI()
@@ -20,4 +19,4 @@ async def database_disconnect():
 
 @app.post("/give_me_the_odds")
 async def give_me_the_odds(request: GiveMeTheOddsRequest):
-    return await determine_odds(request)
+    return await determine_odds_of_success(request)
