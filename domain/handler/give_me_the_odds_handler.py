@@ -7,7 +7,6 @@ from infrastructure.database.entity.route_entity import RouteEntity
 
 
 def determine_odds_of_success(routes: [RouteEntity], request: GiveMeTheOddsRequest) -> Odds:
-    print("routes ==> ", routes)
     ship_itinerary = get_ship_itinerary(routes, request.millennium_falcon.departure, request.millennium_falcon.arrival)
     ship_total_travel_time = get_ship_total_travel_time(ship_itinerary, routes)
     num_potential_captures = get_num_potential_captures(ship_itinerary, routes, request.millennium_falcon.autonomy,
