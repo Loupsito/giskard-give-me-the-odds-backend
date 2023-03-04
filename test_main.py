@@ -69,3 +69,30 @@ def test_give_me_the_odds_with_countdown_too_short():
     )
     assert response.status_code == 200
     assert response.text == '{"value":0}'
+
+
+def test_give_me_the_odds_without_millennium_falcon_sent():
+    response = client.post(
+        "/give_me_the_odds",
+        json={
+            "empire": {
+                "countdown": 8,
+                "bounty_hunters": [
+                    {
+                        "planet": "Hoth",
+                        "day": 6
+                    },
+                    {
+                        "planet": "Hoth",
+                        "day": 7
+                    },
+                    {
+                        "planet": "Hoth",
+                        "day": 8
+                    }
+                ]
+            }
+        },
+    )
+    assert response.status_code == 200
+    assert response.text == '{"value":81.0}'
