@@ -1,18 +1,20 @@
+from typing import List
+
 import networkx as nx
 
 from domain.model.empire import Empire
 from infrastructure.database.entity.route_entity import RouteEntity
 
 
-def get_ship_itinerary(routes: [RouteEntity], origin: str, destination: str):
+def get_ship_itinerary(routes: List[RouteEntity], origin: str, destination: str):
     graph = nx.DiGraph()
     for route in routes:
-        graph.add_edge(route[0], route[1], weight=route[2])
+        graph.add_edge(route.origin, route.destination, weight=route.travel_time)
 
     return nx.shortest_path(graph, source=origin, target=destination, weight='weight')
 
 
-def get_ship_total_travel_time(path: [str], routes: [RouteEntity]):
+def get_ship_total_travel_time(path: [str], routes: List[RouteEntity]):
     total_time_travel = 0
 
     if len(path) <= 1:
@@ -30,7 +32,7 @@ def get_ship_total_travel_time(path: [str], routes: [RouteEntity]):
     return total_time_travel
 
 
-def get_num_potential_captures(path: [str], routes: [RouteEntity], autonomy: int, empire: Empire):
+def get_num_potential_captures(path: [str], routes: List[RouteEntity], autonomy: int, empire: Empire):
     num_potential_capture = 0
     total_time_travel = 0
     initial_autonomy = autonomy

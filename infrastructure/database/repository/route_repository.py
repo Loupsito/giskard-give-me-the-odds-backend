@@ -1,6 +1,3 @@
-from infrastructure.database.database import database_engine
-
-
-async def get_all_routes():
+async def get_all_routes(db):
     query = "SELECT * from routes"
-    return await database_engine.fetch_all(query=query)
+    return await db.fetch_all(query=query)

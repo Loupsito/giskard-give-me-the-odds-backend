@@ -9,14 +9,15 @@ from infrastructure.database.entity.route_entity import RouteEntity
 
 def test_get_ship_itinerary_returns_correct_itinerary():
     routes = [
-        ('A', 'B', 10),
-        ('B', 'C', 15),
-        ('A', 'C', 30),
-        ('B', 'D', 50),
-        ('D', 'C', 30),
-        ('B', 'E', 100),
-        ('E', 'C', 10)
+        RouteEntity('A', 'B', 10),
+        RouteEntity('B', 'C', 15),
+        RouteEntity('A', 'C', 30),
+        RouteEntity('B', 'D', 50),
+        RouteEntity('D', 'C', 30),
+        RouteEntity('B', 'E', 100),
+        RouteEntity('E', 'C', 10)
     ]
+
     expected_itinerary = ['A', 'B', 'C']
 
     assert get_ship_itinerary(routes, 'A', 'C') == expected_itinerary
@@ -24,9 +25,9 @@ def test_get_ship_itinerary_returns_correct_itinerary():
 
 def test_get_ship_itinerary_raises_exception_if_origin_or_destination_not_in_graph():
     routes = [
-        ('A', 'B', 10),
-        ('B', 'C', 15),
-        ('B', 'D', 50)
+        RouteEntity('A', 'B', 10),
+        RouteEntity('B', 'C', 15),
+        RouteEntity('B', 'D', 30),
     ]
 
     with pytest.raises(nx.NodeNotFound):
@@ -36,9 +37,9 @@ def test_get_ship_itinerary_raises_exception_if_origin_or_destination_not_in_gra
 
 def test_get_ship_itinerary_raises_exception_if_no_route_found():
     routes = [
-        ('A', 'B', 10),
-        ('B', 'C', 15),
-        ('B', 'D', 50)
+        RouteEntity('A', 'B', 10),
+        RouteEntity('B', 'C', 15),
+        RouteEntity('B', 'D', 50),
     ]
 
     with pytest.raises(nx.NetworkXNoPath):

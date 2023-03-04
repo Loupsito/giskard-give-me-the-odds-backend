@@ -1,5 +1,3 @@
-import pytest
-
 from domain.dto.give_me_the_odds_request import GiveMeTheOddsRequest
 from domain.handler.give_me_the_odds_handler import determine_odds_of_success
 from domain.model.bounty_hunter import BountyHunter
@@ -8,20 +6,14 @@ from domain.model.millennium_falcon import MillenniumFalcon
 from infrastructure.database.entity.route_entity import RouteEntity
 
 
-@pytest.mark.asyncio
-async def test_determine_odds_of_success(mocker):
+def test_determine_odds_of_success():
     routes = [
-        RouteEntity('A', 'B', 10),
-        RouteEntity('B', 'C', 15),
-        RouteEntity('C', 'D', 20)
+        RouteEntity('Tatooine', 'Dagobah', 6),
+        RouteEntity('Dagobah', 'Endor', 4),
+        RouteEntity('Dagobah', 'Hoth', 1),
+        RouteEntity('Hoth', 'Endor', 1),
+        RouteEntity('Tatooine', 'Hoth', 6),
     ]
-
-    # Mock the sqlite3.connect() function
-    mock_connect = mocker.patch('sqlite3.connect')
-
-    # Mock the cursor.execute() and cursor.fetchall() methods
-    mock_cursor = mock_connect.return_value.cursor.return_value
-    mock_cursor.execute.return_value.fetchall.return_value = routes
 
     # create a MillenniumFalcon object
     millennium_falcon = MillenniumFalcon(
@@ -50,6 +42,6 @@ async def test_determine_odds_of_success(mocker):
         empire=empire
     )
 
-    expected_num = 81.0
+    expected_odds = 81.0
 
-    await determine_odds_of_success(request)
+    assert determine_odds_of_success(routes, request).value == expected_odds
