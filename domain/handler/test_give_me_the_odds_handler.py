@@ -15,7 +15,6 @@ def test_determine_odds_of_success():
         RouteEntity('Tatooine', 'Hoth', 6),
     ]
 
-    # create a MillenniumFalcon object
     millennium_falcon = MillenniumFalcon(
         autonomy=6,
         departure='Tatooine',
@@ -23,20 +22,19 @@ def test_determine_odds_of_success():
         routes_db='routes.db'
     )
 
-    # create a list of BountyHunter objects
     bounty_hunters = [
         BountyHunter(planet='Hoth', day=6),
         BountyHunter(planet='Hoth', day=7),
         BountyHunter(planet='Hoth', day=8)
     ]
 
-    # create an Empire object
+
     empire = Empire(
         countdown=8,
         bounty_hunters=bounty_hunters
     )
 
-    # create a GiveMeTheOddsRequest object
+
     request = GiveMeTheOddsRequest(
         millennium_falcon=millennium_falcon,
         empire=empire
